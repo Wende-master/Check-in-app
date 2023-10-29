@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios Tabla</title>
+
+    <!-- Estilos CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link href="../static/css/estilo.css" rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css">
+    <link href="../static/css/cdnjsdeliver.css" rel="stylesheet" th:href="@{/css/cdnjsdeliver.css}" type="text/css">
+    <link href="../static/css/maxcdn.css" rel="stylesheet" th:href="@{/css/maxcdn.css}" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link rel="icon" th:href="@{/images/login-image.png}" type="image/icon type">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
+    <!-- TOAST NOTIFICATION -->
+    <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"> -->
+
+    <!-- Scripts y JSON -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../static/js/json.json" th:src="@{/js/json.json}"></script>-->
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark gradient-1">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{/}"
+           data-toggle="popover" title="Inicio" data-content="Inicio">
+            <i class="fa fa-home mr-2" style="font-size: 25px; color: white;"></i>
+
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}" href="#"
+                       data-toggle="popover" title="Cerrar Sesión" data-content="Cerrar Sesión">
+                        <i class="fa fa-sign-out-alt mr-2" style="font-size: 25px; color: white;"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+
+<div class="container">
+    <div class="row col-md-10 animate-flicker2">
+        <h2>Usuarios Registrados</h2>
+    </div>
+    <br>
+    <table id="users-table" class="table table-bordered table-hover gradient-1">
+        <thead class="gradient-1">
+        <tr align="center">
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Eliminar</th>
+        </tr>
+        </thead>
+        <tbody align="center">
+        <tr th:each="user : ${users}">
+            <td style="font-weight: bold;" align="center" th:text="${user.firstName}"></td>
+            <td style="font-weight: bold;" align="center" th:text="${user.LastName}"></td>
+            <td style="font-weight: bold;" align="center" th:text="${user.email}"></td>
+            <!-- <td><a class="btn btn-danger" th:href="@{/deleteUser/{id}(id=${user.id})}" id="toastBtn">
+                 <i class="fa-regular fa-bookmark"></i>  -->
+            <td><a class="btn btn-danger" th:href="@{/deleteUser/{id}(id=${user.id})}" id="toastBtn">
+                <i class="fa fa-user-times" style="font-size: 25px; color: white;"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- <div class="toast hide">
+        <span class="fa-regular fa-circle-check"></span>
+        <span class="message">Se eliminó exitosamente</span>
+        <div class="closeButton">
+            <span class="fa-solid fa-xmark"></span>
+        </div>
+    </div>
+     -->
+
+    <div th:if="${param.deleteSuccess}">
+        <div class="alert alert-success" role="alert" id="eliminado">
+            ¡Usuario eliminado correctamente!
+        </div>
+    </div>
+</div>
+
+<script>
+//TOAST NOTIFICATION
+/*let time;
+        const runTimer = () => {
+            time = setTimeout(function(){
+            $('.toast').removeClass("show");
+            $('.toast').addClass("hide");
+            },2500);
+        }
+
+        $("#toastBtn").click(function(){
+            $('.toast').addClass("show");
+            $('.toast').removeClass("hide");
+            $('.toast').addClass("showToast");
+            $("#toastBtn").html("<i class='fa-solid fa-bookmark'></i> Guardado");
+            runTimer();
+        });
+
+        $('.closeButton').click(
+            function() {
+                $('.toast').removeClass("show");
+                $('.toast').addClass("hide");
+            });
+
+        $(".toast").hover(
+            function(){
+                clearTimeout(time);
+            },function(){
+                runTimer();
+            }
+        );
+*/
+   setTimeout(function() {
+    document.getElementById("eliminado").style.opacity = "0.5";
+    setTimeout(function() {
+    document.getElementById("eliminado").style.opacity = "0";
+  }, 3000); // 3000 es el tiempo en milisegundos (3 segundo)
+}, 5000); // 5000 es el tiempo en milisegundos (5 segundos)
+
+
+    //Datatable
+    $(document).ready(function() {
+        $('#users-table').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                //"url": "js/json.json" //Por si quiero cambiar algún texto manualmente
+            },
+            "columnDefs": [{
+                "targets": [3],
+                "orderable": false,
+                "searchable": false,
+
+            }],
+
+            "columns": [
+                { "searchable": true },
+                { "searchable": true },
+                null,
+                null
+            ],
+            //"pageLength": 5,
+            "lengthMenu": [5, 10, 25, 50, 100]
+        });
+    });
+
+</script>
+
+</body>
+</html>

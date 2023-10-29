@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Perfil</title>
+    <!-- Bootstrap CSS -->
+    <link href="../static/css/estilo.css" rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css">
+    <link href="../static/css/cdnjsdeliver.css" rel="stylesheet" th:href="@{/css/cdnjsdeliver.css}" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link href="../static/css/maxcdn.css" rel="stylesheet" th:href="@{/css/maxcdn.css}" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="icon" th:href="@{/images/login-image.png}" type="image/icon type">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div th:if="${actual.id != user.id}" class="container">
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;" id="error-message"></div>
+
+    <script>
+      setTimeout(function(){
+        window.location.href = "/";
+      }, 5000);
+
+      // Crear el mensaje de error con título y contenido personalizados con html
+        var errorMessage = document.createElement("div");
+        errorMessage.innerHTML = "<h1 align='center' style='font-size: 500%'>404</h1><h3 align='center'>¡Ups!</h3><br>"+
+        "<div align='center'><b>No se encontró la página</b></div>";
+
+        // Obtener el contenedor del mensaje de error y agregar el mensaje
+        var errorContainer = document.getElementById("error-message");
+        if (errorContainer) {
+            errorContainer.appendChild(errorMessage);
+        }
+    </script>
+</div>
+
+<nav class="navbar navbar-expand-lg gradient-1" th:if="${actual.id == user.id}">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{/}"
+           data-toggle="popover" title="Inicio" data-content="Inicio">
+            <i class="fa fa-home" style="font-size: 25px; color: white;"></i>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}" href="#"
+                       data-toggle="popover" title="Cerrar Sesión" data-content="Cerrar Sesión">
+                        <i class="fa fa-sign-out-alt" style="font-size: 25px; color: white;"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+
+<section class="text-center text-lg-start" th:if="${actual.id == user.id}">
+    <div class="container py-4">
+        <div class="row g-0 align-items-center">
+            <div class="col-lg-5 mb-5 mb-lg-0">
+                <div class="card cascading-right gradient-1">
+                    <a href="" th:href="@{/}" class="btn btn-outline-light btn-back btn-lg btn-block">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+                    <div class="card-body p-5 shadow-5 text-center">
+                        <h2 class="fw-bold mb-5"><span th:text="${actual.email}"></span></h2>
+                        <label class="fw-bold mb-5">Estás editando</label>
+                        <!-- sec:authorize="isAuthenticated() and #numbers.equals(actual.id, id)" -->
+                        <form method="post"
+                              role="form"
+                              th:action="@{/editar/{id}(id=${user.id})}"
+                              th:object="${user}" enctype="multipart/form-data">
+                            <!-- Nombre input registro/guardar -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="firstName" name="firstName"
+                                       class="form-control gradient-custom-3"
+                                       placeholder="Nombre" th:field="*{firstName}"
+                                       autofocus="autofocus"
+                                       required>
+
+                                <p th:errors="*{firstName}" class="text-danger"
+                                   th:if="${#fields.hasErrors('firstName')}"></p>
+                            </div>
+
+                            <!-- Apellido input -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="lastName" name="lastName" class="form-control gradient-custom-3"
+                                       placeholder="Apellido" th:field="*{lastName}" required
+                                       autofocus="autofocus">
+
+                                <p th:errors="*{lastName}" class="text-danger"
+                                   th:if="${#fields.hasErrors('lastName')}"></p>
+                            </div>
+
+                            <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <input type="email" id="email" name="email" class="form-control gradient-custom-3"
+                                       placeholder="Email" th:field="*{email}" required
+                                       autofocus="autofocus">
+
+                                <p th:errors="*{email}" class="text-danger"
+                                   th:if="${#fields.hasErrors('email')}"></p>
+                            </div>
+
+                            <!-- Password input -->
+                            <div class="form-outline mb-4 input-container input-group">
+                                <input type="password" id="password" name="password"
+                                       class="form-control gradient-custom-3"
+                                       placeholder="Contraseña" th:field="*{password}" required>
+                                <button type="button" class="btn btn-show-password btn-outline-secondary"><i
+                                        class="fa fa-eye"></i></button>
+                                <p th:errors="*{password}" class="text-danger"
+                                   th:if="${#fields.hasErrors('password')}"></p>
+                            </div>
+
+
+                            <!-- IMAGE -->
+
+                            <div class="form-outline d-flex justify-content-center custom-file">
+                                <label class="custom-file-input-registro" for="avatar"><strong>Elija una foto de
+                                    perfil</strong></label>
+                                <input type="file" class="custom-file-input-registro gradient-custom-3" id="avatar"
+                                       name="file">
+                                <img src="" data-toggle="popover" title="Foto de perfil" data-content="Foto de perfil"
+                                     id="default-avatar" th:src="@{/images/avatar.png}"
+                                     class="w-100 rounded-circle shadow-4" alt=""
+                                     style="max-width: 20%; cursor: pointer;"
+                                     onclick="document.getElementById('avatar').click();"/>
+                            </div>
+                            <br>
+                            <!-- Submit button -->
+                            <div class="d-flex justify-content-center">
+                                <button type="submit"
+                                        class="btn rounded-pill btn-outline-success btn-block mb-4 gradient-custom-3">
+                                    Guardar
+                                </button>
+                            </div>
+                            <br>
+                            <div th:if="${param.success}">
+                                <div class="alert alert-info">
+                                    ¡Actualizado con éxito!
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <img th:src="@{/images/login-image.png}" class="w-100 rounded-4 shadow-4" alt=""
+                     style="max-width: 70%;"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+
+   // Para la elección de foto de perfil
+    document.getElementById('avatar').addEventListener('change', function() {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function() {
+            document.getElementById('default-avatar').src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Para mostrar u ocultar la contraseña
+    $(document).ready(function () {
+        $('.btn-show-password').on('click', function () {
+            var passwordField = $(this).closest('.input-group').find('.form-control');
+            var passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

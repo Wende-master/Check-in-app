@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link href="../static/css/estilo.css" rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css">
+    <link href="../static/css/cdnjsdeliver.css" rel="stylesheet" th:href="@{/css/cdnjsdeliver.css}" type="text/css">
+    <link href="../static/css/maxcdn.css" rel="stylesheet" th:href="@{/css/maxcdn.css}" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link rel="icon" th:href="@{/images/login-image.png}" type="image/icon type">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg gradient-1">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{/}"
+           data-toggle="popover" title="Inicio" data-content="Inicio">
+            <i class="fa fa-home" style="font-size: 25px; color: white;"></i>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}" href="#"
+                       data-toggle="popover" title="Cerrar Sesión" data-content="Cerrar Sesión">
+                        <i class="fa fa-sign-out-alt" style="font-size: 25px; color: white;"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img th:src="${'/files/' + entrada.imagen}" class="img-fluid img-thumbnail" alt="Imagen de la entrada">
+        </div>
+        <div class="col-md-8">
+            <h2 th:text="${entrada.titulo}" class="fw-bold mb-3"></h2>
+            <p th:text="${entrada.contenido}" class="fs-5 mb-4"></p>
+        </div>
+    </div>
+</div>
+
+
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark gradient-1">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{/}"
+           data-toggle="popover" title="Inicio" data-content="Inicio">
+            <i class="fa fa-home mr-2" style="font-size: 25px; color: white;"></i>
+
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}" href="#"
+                       data-toggle="popover" title="Cerrar Sesión" data-content="Cerrar Sesión">
+                        <i class="fa fa-sign-out-alt mr-2" style="font-size: 25px; color: white;"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img th:src="${'/files/' + entrada.imagen}" class="img-fluid" alt="Imagen de la entrada">
+        </div>
+        <div class="col-md-8">
+            <h2 th:text="${entrada.titulo}"></h2>
+            <p th:text="${entrada.contenido}"></p>
+
+        </div>
+    </div>
+</div> -->
+</body>
+</html>

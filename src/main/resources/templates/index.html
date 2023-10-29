@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+
+    <link href="../static/css/index.css" rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link rel="icon" th:href="@{/images/login-image.png}" type="image/icon type">
+
+    <script src="../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark gradient-1">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{/}"
+           data-toggle="popover" title="Inicio" data-content="Inicio">
+            <i class="fa fa-home mr-2" style="font-size: 25px; color: white;"></i>
+
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" aria-current="page" th:href="@{/logout}" href="#"
+                       data-toggle="popover" title="Cerrar Sesión" data-content="Cerrar Sesión">
+                        <i class="fa fa-sign-out-alt mr-2" style="font-size: 25px; color: white;"></i>
+                    </a>
+                </li>
+                &nbsp;&nbsp;&nbsp;
+                <li class="nav-item">
+                    <a th:href="@{/editar/{id}(id=${actual.id})}" data-toggle="popover" title="Editar perfil"
+                       data-content="Editar perfil">
+                        <i class="fas fa-user-circle fa-2x icono" style="font-size: 40px;"></i>
+                    </a>
+                </li>
+                &nbsp;&nbsp;&nbsp;
+                <li class="nav-item">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')"
+                       th:href="@{/userstable}" href="#" class="navbar-brand" data-toggle="popover"
+                       title="Administrador" data-content="Administrador">
+                        <img th:src="@{/images/admin.svg}" style="width: 25px">
+                    </a>
+
+                </li>
+            </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <h6 class="alert alert-info"><span th:text="${actual.email}"></span></h6>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Vertical navbar -->
+<div class="vertical-nav vertical-gradient active " id="sidebar">
+    <div class="accordion text-left" id="accordionExample">
+        <div class="accordion-item">
+            <div class="accordion-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link accordion-button custom-button collapsed font-weight-bold text-uppercase"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                        Usuarios &nbsp;<i class="fas fa-users"></i> &nbsp;&nbsp; <i
+                            class="fas iconos fa-chevron-down"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div align="center">
+                        <div class="py-4 px-3 mb-4 vertical-gradient">
+                            <div th:each="usuario : ${lista}">
+                                <div class="media d-flex align-items-center">
+                                    <div class="col-4">
+                                        <div class="row media d-flex align-items-center">
+                                            <a th:href="'/chat/' + ${usuario.id}">
+                                                <img class="rounded-circle img-thumbnail avatar"
+                                                     th:src="*{usuario.avatar}"
+                                                     width="100%"/>
+                                                <span th:text="${usuario.email}"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link accordion-button custom-button collapsed font-weight-bold text-uppercase"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                            aria-expanded="false" aria-controls="collapseThree">
+                        Configuración&nbsp;<i class="fas fa-cogs"></i>&nbsp;&nbsp; <i
+                            class="iconos fas fa-chevron-down"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div align="center" sec:authorize="isAuthenticated()">
+                        <div sec:authorize="hasRole('ROLE_ADMIN')">
+                            <a th:href="@{/admin}" href="#" class="nav-link" data-toggle="popover"
+                               title="Crear Entradas" data-content="Crear Entradas" style="text-align: right;">
+                                <img src="" th:src="@{/images/update.svg}" style="width: 25px">
+                            </a>
+                        </div>
+                        <a style="text-align: right;" class="nav-link" aria-current="page" th:href="@{/logout}" href="#"
+                           data-toggle="popover" title="Cerrar Sesión" data-content="Cerrar Sesión">
+                            <i class="fa fa-sign-out-alt mr-2" style="font-size: 25px; color: grey;"></i>
+                        </a>
+
+                        <a style="text-align: right;" class="nav-link" href="#"
+                           th:href="@{/editar/{id}(id=${actual.id})}" data-toggle="popover" title="Editar perfil"
+                           data-content="Editar perfil">
+                            <i class="fas fa-user-circle fa-2x icono-sidebar" style="font-size: 33px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header" id="headingFive">
+                <h5 class="mb-0">
+                    <button class="btn btn-link accordion-button custom-button collapsed font-weight-bold text-uppercase"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                            aria-controls="collapseFive">
+                        Blogs&nbsp;&nbsp;&nbsp;<i class="iconos fas fa-chevron-down"></i>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                 data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <h2 th:if="${list.isEmpty()}" class="alert alert-light"> No hay entradas</h2>
+
+                    <div th:if="${!list.isEmpty()}">
+                        <div th:each="entrada : ${list}">
+                            <a th:href="@{/blog/{id}(id=${entrada.id})}" style="text-decoration: none; font-size: 25px; color: white;">
+                                <span th:text="${entrada.titulo}"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <ul class="nav flex-column bg-white mb-0">
+        <li class="nav-item">
+            <a href="/" class="nav-link text-dark font-italic bg-light" onClick="window.location.reload()">
+                <i class="fa fa-refresh mr-3 text-primary fa-fw"></i>
+                Actualizar
+            </a>
+        </li>
+    </ul>
+
+</div>
+<!-- End vertical navbar -->
+
+<!-- Page content holder -->
+<div class="page-content p-5 active" id="content">
+    <!-- Scroll top  -->
+    <button class="button back-to-top" type="button"></button>
+
+    <i id="sidebarCollapse" class="fa fa-chevron-right leftSection mr-2" style="font-size: 30px; color: white;"></i>
+
+    <div style="text-align: center;">
+        <a th:href="@{/editar/{id}(id=${actual.id})}" data-toggle="popover" title="Editar perfil"
+           data-content="Editar perfil">
+            <img src="" class="rounded-circle img-thumbnail" th:src="${actual.avatar}" style="width: 9%;"/>
+        </a>
+    </div>
+
+    <!-- Demo content -->
+    <div th:if="${mensaje}">
+        <div class="alert alert-success" role="alert" id="fichajeEntradaSalida">
+            <span th:text="${mensaje}"></span>
+        </div>
+    </div>
+
+    <!-- Ventana modal con los botones -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog custom-modal-dialog" role="document">
+            <div class="modal-content custom-modal-content">
+                <div class="modal-header custom-modal-header gradient-1">
+                    <img th:src="@{/images/login-image.png}" class="w-100 rounded-circle shadow-4" alt=""
+                         style="max-width: 25%;"/>
+                    <h5 class="modal-title custom-modal-title" id="exampleModalLabel" style="margin-left: 10%">Sistema
+                        de Fichaje</h5>
+                    <button type="button" class="close custom-close rounded-4" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-modal-body gradient-1">
+                    <div class="d-flex justify-content-between">
+                        <form method="post" th:action="@{/ficharEntrada}">
+                            <button type="submit" class="btn btn-outline-primary custom-btn-block custom-rounded-pill">
+                                Entrada
+                            </button>
+                        </form>
+
+                        <form method="post" th:action="@{/ficharSalida}">
+                            <button type="submit" class="btn btn-outline-danger custom-btn-block custom-rounded-pill">
+                                Salida
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <!-- Botón para abrir la ventana modal -->
+    <div align="start">
+        <a class="btn btn-primary btn-lg btn-block rounded-pill" style="color: white; cursor: pointer;"
+           data-toggle="modal" data-target="#exampleModal">
+            Fichar
+        </a>
+    </div>
+    <br>
+    <p id="bienvenido">Total de horas trabajadas: <span th:text="${totalHorasTrabajadas}"></span></p>
+    <br>
+
+    <div sec:authorize="isAuthenticated()">
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/admin}" href="#" class="navbar-brand btn btn-success btn-lg btn-block rounded-pill"
+               data-toggle="popover"
+               title="Administrador" data-content="Administrador" style="color: white;">
+                Opciones
+            </a>
+        </div>
+
+    </div>
+    <br>
+    <h2 th:if="${list.isEmpty()}" class="alert alert-light" id="noEntradas"> No hay entradas</h2>
+
+
+    <div th:if="${!list.isEmpty()}">
+        <br>
+        <table class="table table-striped" align="center">
+            <thead class="thead-dark">
+            <tr>
+                <th>Titulo</th>
+                <th>Contenido</th>
+                <th>Imagen</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entrada : ${list}">
+                <td class="col-md-4 col-sm-6">
+                    <a th:href="@{/blog/{id}(id=${entrada.id})}" style="text-decoration: none; color: white;">
+                        <span th:text="${entrada.titulo}"></span>
+                    </a>
+                </td>
+                <td class="col-md-6 col-sm-6">
+                    <span th:text="${entrada.contenido.substring(0,30)  + '...'}"></span>
+                </td>
+                <td class="col-md-2 col-sm-6">
+                    <img src="" class="img-fluid img-thumbnail" th:src="${'/files/' + entrada.imagen}">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row text-white">
+
+        <div class="col-lg-7">
+            <!--  -->
+            <p class="lead">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+            </p>
+            <!--  -->
+            <div class="bg-white p-5 rounded my-5 shadow-sm">
+                <p class="lead font-italic mb-0 text-muted">"Lorem ipsum dolor sit amet, consectetur adipisicing
+                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+                    id est laborum."</p>
+            </div>
+
+            <p class="lead">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor.
+            </p>
+
+        </div>
+
+        <div class="col-lg-5">
+            <!--  -->
+            <p class="lead">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+            </p>
+        </div>
+    </div>
+
+</div>
+<!-- End demo content -->
+
+<script>
+//left-right icons change
+$(document).ready(function() {
+  $('#sidebarCollapse').on('click', function() {
+    $('#sidebar, #content').toggleClass('active');
+    $(this).toggleClass('fa-chevron-left fa-chevron-right');
+  });
+});
+
+
+//Scroll top button
+var amountScrolled = 200; //en pixeles
+var amountScrolledNav = 25;
+
+$(window).scroll(function() {
+  if ( $(window).scrollTop() > amountScrolled ) {
+    $('button.back-to-top').addClass('show');
+  } else {
+    $('button.back-to-top').removeClass('show');
+  }
+});
+
+$('button.back-to-top').click(function() {
+  $('html, body').animate({
+    scrollTop: 0
+  }, 800);
+  return false;
+});
+
+
+
+</script>
+
+</body>
+</html>

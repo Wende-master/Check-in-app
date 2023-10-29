@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="../static/css/estilo.css" rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css">
+    <link href="../static/css/cdnjsdeliver.css" rel="stylesheet" th:href="@{/css/cdnjsdeliver.css}" type="text/css">
+    <link href="../static/css/maxcdn.css" rel="stylesheet" th:href="@{/css/maxcdn.css}" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link rel="icon" th:href="@{/images/login-image.png}" type="image/icon type">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body> <!-- class="gradient-custom-1" -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark gradient-1">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{/}"
+           data-toggle="popover" title="Inicio" data-content="Inicio">
+            <i class="fa fa-home mr-2" style="font-size: 25px; color: white;"></i>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/registro}" href="#"
+                       data-toggle="popover" title="Registrarse" data-content="Registrarse">
+                        <img th:src="@{/images/registro.svg}" style="width: 26px">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+
+<!-- Section: Design Block -->
+<section class="text-center text-lg-start">
+    <div class="container py-4">
+        <div class="row g-0 align-items-center">
+            <div class="col-lg-5 mb-5 mb-lg-0">
+                <div class="card cascading-right gradient-1">
+                    <div class="card-body p-5 shadow-5 text-center">
+                        <h2 class="fw-bold mb-5">Login</h2>
+
+                        <div th:if="${param.error}">
+                            <p class="alert alert-danger">El email o la contraseña son incorrectos</p>
+                        </div>
+                        <div th:if="${param.logout}">
+                            <p class="alert alert-success">Se cerró sesión con éxito</p>
+                        </div>
+                        <!--  -->
+                        <form method="post" role="form" th:action="@{/login}" class="form-horizontal">
+                            <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <input type="email" id="username"
+                                       name="username" class="form-control gradient-custom-3" placeholder="Email">
+                            </div>
+
+                            <!-- Password input -->
+                            <div class="form-outline mb-4 input-container input-group">
+
+                                <input type="password" id="password" name="password"
+                                       class="form-control gradient-custom-3" placeholder="Contraseña">
+                                <button class="btn btn-outline-secondary" type="button" id="showPassword">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                            </div>
+
+                            <!-- Submit button -->
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn rounded-pill btn-outline-success btn-block mb-4 gradient-custom-3">
+                                    Login
+                                </button>
+                            </div>
+
+                            <!-- Register buttons -->
+                            <div class="text-center">
+                                <span> <strong>¿No tienes cuenta?</strong></span>
+                                <a type="button" class="btn rounded-pill btn-outline-success btn-block btn-floating mx-1"
+                                   th:href="@{/registro}">
+                                    Regístrate
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <img th:src="@{/images/login-image.png}" class="w-100 rounded-4 shadow-4" alt=""
+                     style="max-width: 100%;"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var passwordInput = document.getElementById("password");
+    var showPasswordButton = document.getElementById("showPassword");
+
+  showPasswordButton.addEventListener("click", function (event) {
+    // Toggle the type attribute
+    var type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+
+    // Toggle the eye icon
+    var icon = showPasswordButton.querySelector("i");
+    icon.classList.toggle("fa-eye");
+    icon.classList.toggle("fa-eye-slash");
+  });
+</script>
+
+</body>
+</html>

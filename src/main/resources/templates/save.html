@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Entradas</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link href="../static/css/estilo.css" rel="stylesheet" th:href="@{/css/estilo.css}" type="text/css">
+    <link href="../static/css/cdnjsdeliver.css" rel="stylesheet" th:href="@{/css/cdnjsdeliver.css}" type="text/css">
+    <link href="../static/css/maxcdn.css" rel="stylesheet" th:href="@{/css/maxcdn.css}" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link rel="icon" th:href="@{/images/login-image.png}" type="image/icon type">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+
+<nav class="navbar navbar-expand-lg gradient-1">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{/}"
+           data-toggle="popover" title="Inicio" data-content="Inicio">
+            <i class="fa fa-home" style="font-size: 25px; color: white;"></i>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}" href="#"
+                       data-toggle="popover" title="Cerrar Sesión" data-content="Cerrar Sesión">
+                        <i class="fa fa-sign-out-alt" style="font-size: 25px; color: white;"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+
+<div class="container">
+    <br>
+    <h2>Agregar Entrada</h2>
+    <form action="#" th:action="@{/save}" th:object="${entrada}"
+          method="post" enctype="multipart/form-data" class="mb-3">
+        <div class="form-group">
+            <label for="titulo">Titulo</label>
+            <input type="text" class="form-control" placeholder="Título" id="titulo" th:field="*{titulo}" name="titulo">
+        </div>
+        <input type="hidden" th:field="*{id}" name="id" id="id">
+        <div class="form-group">
+            <label for="contenido">Contenido</label>
+            <textarea id="contenido" name="contenido" placeholder="Esto es el contenido(255 caracteres)..." th:field="*{contenido}" rows="4" cols="80"
+                      class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="imagen">Imagen</label>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="imagen" name="file">
+                <label class="custom-file-label" for="imagen">Elegir archivo</label>
+            </div>
+        </div>
+
+        <button type="submit"  class="btn btn-success">Guardar</button>
+        <a type="button" href="/" class="btn btn-primary hover">Volver</a>
+    </form>
+</div>
+</body>
+
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;" id="error-message"></div>
+
+
+<script th:inline="javascript">
+    // Si el usuario no tiene el rol ROLE_ADMIN, mostrar un mensaje de error y redirigir a la página principal después de 5 segundos
+    /*<![CDATA[*/
+    var hasRoleAdmin = /*[[${#authorization.expression('hasRole(''ROLE_ADMIN'')')}]]*/ false;
+    if (!hasRoleAdmin) {
+        setTimeout(function () {
+            window.location.href = "/";
+        }, 5000); // redirigir después de 5 segundos
+
+        // Crear el mensaje de error con título y contenido personalizados con html
+        var errorMessage = document.createElement("div");
+        errorMessage.innerHTML = "<h1 align='center' style='font-size: 500%'>403</h1><h3>No tiene permisos para acceder a esta página</h3><br>"+
+        "<div align='center'><b>Código de error: Acceso Denegado</b></div>";
+
+        // Obtener el contenedor del mensaje de error y agregar el mensaje
+        var errorContainer = document.getElementById("error-message");
+        if (errorContainer) {
+            errorContainer.appendChild(errorMessage);
+        }
+    }
+    /*]]>*/
+</script>
+
+</html>
