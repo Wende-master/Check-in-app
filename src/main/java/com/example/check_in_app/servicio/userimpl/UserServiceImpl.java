@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
         if (role == null) {
             role = checkRoleExist();
         }
-
-        if (user.getEmail().equalsIgnoreCase("wende@gmail.com") || user.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+        // Aquí establezco quiénes pueden ser administradores
+        if (user.getEmail().equalsIgnoreCase("admin@gmail.com") || user.getEmail().equalsIgnoreCase("admin2@gmail.com")) {
             Role adminRole = roleRepository.findByName("ROLE_ADMIN");
             if (adminRole == null) {
                 adminRole = new Role();
